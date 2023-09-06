@@ -13,10 +13,10 @@ class CountDetectedObjects:
     """Count detected objects."""
 
     def __init__(
-        self, object_detector: ObjectDetector, object_count_repos: List[ObjectCountRepo]
+        self, object_detector: ObjectDetector, object_count_repo: ObjectCountRepo
     ):
         self.__object_detector = object_detector
-        self.__object_count_repos = object_count_repos
+        self.__object_count_repo = object_count_repo
 
     def execute(self, image: BytesIO, threshold: float) -> CountResponse:
         """Detect and count the objects in a given image above threshold.
@@ -35,9 +35,8 @@ class CountDetectedObjects:
         """
         predictions = self.__find_valid_predictions(image, threshold)
         object_counts = count(predictions)
-        for object_count_repo in self.__object_count_repos:
-            object_count_repo.update_values(object_counts)
-            total_objects = object_count_repo.read_values()
+        self.__object_count_repo.update_values(object_counts)
+        total_objects = self.__object_count_repo.read_values()
         return CountResponse(current_objects=object_counts, total_objects=total_objects)
 
     def __find_valid_predictions(self, image, threshold):

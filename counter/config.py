@@ -27,9 +27,9 @@ def prod_count_action() -> CountDetectedObjects:
     mysql_password = os.environ.get("MYSQL_PASSWORD", "root")
     return CountDetectedObjects(
         TFSObjectDetector(tfs_host, tfs_port, "rfcn"),
-        [
-            CountMongoDBRepo(host=mongo_host, port=mongo_port, database=mongo_db),
-            CountMySQLDBRepo(
+        
+        # CountMongoDBRepo(host=mongo_host, port=mongo_port, database=mongo_db),
+        CountMySQLDBRepo(
                 host=mysql_host,
                 port=mysql_port,
                 database=mysql_db,
@@ -37,7 +37,7 @@ def prod_count_action() -> CountDetectedObjects:
                 user=mysql_user,
                 password=mysql_password,
             ),
-        ],
+        
     )
 
 
